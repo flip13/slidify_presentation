@@ -1,0 +1,68 @@
+---
+title       : Data Products
+subtitle    : Course Project
+author      : Timothy Hass
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+url         : 
+    example : ../../www
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Shiny nucleic or amino-acid application
+
+---  
+
+## 
+
+My Shiny application searches genomic sequences for specified nucleic or amino-acid sequences (represented by As, Cs, Gs, or Ts) in which a researcher may be interested.  It tells the researcher the number of times that particular sequence is found within the genomic sequence in a FASTA file.
+
+---
+
+## 
+
+For example, a researcher may be interested in the codon TGC.  They will want to find out the number of times it is expressed in a genomic sequence like:  
+  
+<br>
+
+CTCTATTGTAATTCTGTCACCGTGCTGTAAAGGAACTGGCTCCTTTTCCA
+TCCCTGCCTGGGGTGGCATTAACTCTTTAGGAGGAAAGCCATATCGAATA
+CACTGTAAATATGGAGGAATGTTGAACTCTCTGGCTATACTTTCCTGAAG
+CTCAAAAAAGGTTGTTGAAGGCTTAAGGGTAACCATAGACTGCCGTCCAT
+CGTTAGTTGTTATTCGAATCTTCTTCTCCTTAGAAGTGGTAGGTGAGTAG
+GGAGCCTTGGTGGGGGTGGCAGGTGCAGATGATGGCCCATCACGAATAGT
+ACTTGGAGAAACAGTTCTGGGCTGCCCCTTTTGCTCTTGTTTTAATTTCT
+CTGTTTTCCGTTTCTGCATCACAGAAGCTTGTTCTGTGATGTTCTGTTGA
+ATAGTTCTTTCAGTTTTACTCATGTTTAATTCTTCCTTATGCAAAGTTTT
+TGTTTTCTGTCCAGTAAGAATAATTTTAGTTGGTAGCTGCGACTCCAATT
+CTTGTCCTTGCACATCTCCAACTCTCTGAGCATGAGCACCATCTATATTT
+ACAGGAGTGTAATCGTCCGGATTTTTTTTTGCAGTCTGATGCAATATAGT
+GTGGACAACTTTCTGAACTAGGA
+
+---
+
+I use the count command which is part of the seqinr package to find the number of each sequence of the specified length.  Since a FASTA file can have several genomic sequences in it, I total the counts of the requested sequence for each genomic sequence.
+
+---
+
+
+An example of how this command follows.
+
+
+```r
+search_pattern <- tolower("TGC")
+genomic_sequence <- tolower(s2c("CTCTATTGTAATTCTGTCACCGTGCTGTAAAGGAACTGGCTCCTTTTCCATCCCTGCCTGGGGTGGCATTAACTCTTTAGGAGGAAAGCCATATCGAATACACTGTAAATATGGAGGAATGTTGAACTCTCTGGCTATACTTTCCTGAAGCTCAAAAAAGGTTGTTGAAGGCTTAAGGGTAACCATAGACTGCCGTCCATCGTTAGTTGTTATTCGAATCTTCTTCTCCTTAGAAGTGGTAGGTGAGTAGGGAGCCTTGGTGGGGGTGGCAGGTGCAGATGATGGCCCATCACGAATAGTACTTGGAGAAACAGTTCTGGGCTGCCCCTTTTGCTCTTGTTTTAATTTCTCTGTTTTCCGTTTCTGCATCACAGAAGCTTGTTCTGTGATGTTCTGTTGAATAGTTCTTTCAGTTTTACTCATGTTTAATTCTTCCTTATGCAAAGTTTTTGTTTTCTGTCCAGTAAGAATAATTTTAGTTGGTAGCTGCGACTCCAATTCTTGTCCTTGCACATCTCCAACTCTCTGAGCATGAGCACCATCTATATTTACAGGAGTGTAATCGTCCGGATTTTTTTTTGCAGTCTGATGCAATATAGTGTGGACAACTTTCTGAACTAGGA"))
+counts <- data.frame(count(genomic_sequence, nchar(search_pattern)))
+counts$Freq[which(counts$Var1 == search_pattern)]
+```
+
+```
+## [1] 12
+```
+---
+
+
